@@ -34,58 +34,60 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const display = document.getElementById('calculator-display');
-            const buttons = document.querySelectorAll('.button');
-            let currentInput = '';
-            let operator = null;
-            let firstOperand = null;
-    
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const value = button.getAttribute('data-value');
-    
-                    if (value >= '0' && value <= '9' || value === '.') {
-                        // Append digits or decimal to the input
-                        currentInput += value;
-                        display.value = currentInput;
-                    } else if (['+', '-', '*', '/'].includes(value)) {
-                        // Save the first operand and operator
-                        if (currentInput !== '') {
-                            firstOperand = parseFloat(currentInput);
+       document.addEventListener('DOMContentLoaded', () => {
+    const display = document.getElementById('calculator-display');
+    const buttons = document.querySelectorAll('.button');
+    let currentInput = '';
+    let operator = null;
+    let firstOperand = null;
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.getAttribute('data-value');
+
+            if (value >= '0' && value <= '9' || value === '.') {
+                // Append digits or decimal to the input
+                currentInput += value;
+                display.value = currentInput;
+            } else if (['+', '-', '*', '/'].includes(value)) {
+                // Save the first operand and operator
+                if (currentInput !== '') {
+                    firstOperand = parseFloat(currentInput);
+                }
+                operator = value;
+                currentInput = '';
+                display.value = '';
+            } else if (value === '=') {
+                // Perform the calculation
+                if (operator !== null) {
+                    const secondOperand = parseFloat(currentInput);
+                    if (!isNaN(secondOperand)) {
+                        let result;
+                        switch (operator) {
+                            case '+': result = firstOperand + secondOperand; break;
+                            case '-': result = firstOperand - secondOperand; break;
+                            case '*': result = firstOperand * secondOperand; break;
+                            case '/': result = secondOperand !== 0 ? firstOperand / secondOperand : 'Error'; break;
+                            default: result = 'Error'; break;
                         }
-                        operator = value;
-                        currentInput = ''; // Reset input for the next operand
-                        display.value = ''; // Clear display for better UX
-                    } else if (value === '=' && operator !== null) {
-                        // Perform the calculation
-                        let secondOperand = currentInput ? parseFloat(currentInput) : 0;
-                        if (firstOperand !== null && !isNaN(secondOperand)) {
-                            let result;
-                            switch (operator) {
-                                case '+': result = firstOperand + secondOperand; break;
-                                case '-': result = firstOperand - secondOperand; break;
-                                case '*': result = firstOperand * secondOperand; break;
-                                case '/': result = secondOperand !== 0 ? firstOperand / secondOperand : 'Error'; break;
-                                default: result = 'Error'; break;
-                            }
-                            display.value = result;
-                            currentInput = result.toString(); // Update input for chaining calculations
-                            operator = null;
-                            firstOperand = null;
-                        } else {
-                            display.value = 'Error'; // Handle invalid operations
-                        }
-                    } else if (value === 'C') {
-                        // Clear everything
-                        currentInput = '';
+                        display.value = result;
+                        currentInput = result.toString();
                         operator = null;
                         firstOperand = null;
-                        display.value = '';
+                    } else {
+                        display.value = 'Error';
                     }
-                });
-            });
+                }
+            } else if (value === 'C') {
+                // Clear everything
+                currentInput = '';
+                operator = null;
+                firstOperand = null;
+                display.value = '0'; // Set display to 0 after clearing
+            }
         });
+    });
+});
     </script>
         
 </body>
