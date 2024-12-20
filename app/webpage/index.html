@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style/calc_style.css">
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="calculator-display" id="calculator-display" disabled value="0">
+        <div class="calculator-buttons">
+            <button class="button" data-value="7">7</button>
+            <button class="button" data-value="8">8</button>
+            <button class="button" data-value="9">9</button>
+            <button class="button operator" data-value="/">&divide;</button>
+            
+            <button class="button" data-value="4">4</button>
+            <button class="button" data-value="5">5</button>
+            <button class="button" data-value="6">6</button>
+            <button class="button operator" data-value="*">&times;</button>
+            
+            <button class="button" data-value="1">1</button>
+            <button class="button" data-value="2">2</button>
+            <button class="button" data-value="3">3</button>
+            <button class="button operator" data-value="-">&minus;</button>
+            
+            <button class="button" data-value="0">0</button>
+            <button class="button" data-value=".">.</button>
+            <button class="button" data-value="C">C</button>
+            <button class="button operator" data-value="+">+</button>
+            
+            <button class="button equal" data-value="=">=</button>
+        </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const display = document.getElementById('calculator-display');
+          const buttons = document.querySelectorAll('.button');
+          let currentInput = '';
+          let operator = null;
+          let firstOperand = null;
+
+          buttons.forEach(button => {
+              button.addEventListener('click', () => {
+                  const value = button.getAttribute('data-value');
+
+                  if (value >= '0' && value <= '9' || value === '.') {
+                      // Append digits or decimal to the input
+                      currentInput += value;
+                      display.value = currentInput;
+                  } else if (['+', '-', '*', '/'].includes(value)) {
+                      // Save the first operand and operator
+                      if (currentInput !== '') {
+                          firstOperand = parseFloat(currentInput);
+                      }
+                      operator = value;
+                      currentInput = '';
+                      display.value = '';
+                  } else if (value === '=') {
+                      // Perform the calculation
+                      if (operator !== null && currentInput !== '') {
+                          const secondOperand = parseFloat(currentInput);
+                          if (!isNaN(secondOperand)) {
+                              let result;
+                              switch (operator) {
+                                  case '+': result = firstOperand + secondOperand; break;
+                                  case '-': result = firstOperand - secondOperand; break;
+                                  case '*': result = firstOperand * secondOperand; break;
+                                  case '/': result = secondOperand !== 0 ? firstOperand / secondOperand : 'Error'; break;
+                                  default: result = 'Error'; break;
+                              }
+                              display.value = result;
+                              currentInput = !isNaN(result) ? result.toString() : '';
+                              operator = null;
+                              firstOperand = null;
+                          } else {
+                              display.value = 'Error';
+                              currentInput = '';
+                          }
+                      }
+                  } else if (value === 'C') {
+                      // Clear everything
+                      currentInput = '';
+                      operator = null;
+                      firstOperand = null;
+                      display.value = '0'; // Set display to 0 after clearing
+                  }
+              });
+          });
+      });
+    </script>
+</body>
+</html>
