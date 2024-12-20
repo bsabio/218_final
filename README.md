@@ -38,3 +38,6 @@ This project demonstrates the integration of a **SQLAlchemy** database, **Large 
    ```bash
    git clone https://github.com/yourusername/your-repository.git
    cd your-repository
+
+   video: https://youtu.be/_fXRAz3QYDE
+   
