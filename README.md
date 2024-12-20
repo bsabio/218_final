@@ -14,7 +14,7 @@ This project demonstrates the integration of a **SQLAlchemy** database, **Large 
 
 - **LLM Functionality**:
   - This project incorporates **Large Language Model (LLM) functionality** using function calls or another technique to interact with the LLM.
-  - The integration follows the example provided in [Function Calling Example](https://github.com/kaw393939/function_calling_calculator), enabling advanced capabilities powered by an LLM.
+  - The integration follows the example provided in Function Calling Example, enabling advanced capabilities powered by an LLM.
 
 - **Automated Testing**:
   - The project includes comprehensive tests to ensure the application behaves as expected.
